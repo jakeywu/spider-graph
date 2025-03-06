@@ -1,11 +1,11 @@
 from fastapi import APIRouter
-from app.src.utils.output import api_output
+from src.utils.output import api_output
 
 
-pcc_router = APIRouter()
+HEALTH_ROUTER = APIRouter()
 
 
-@pcc_router.get("/api/spider-net/health/check")
+@HEALTH_ROUTER.get("/api/health/check/status")
 async def health_check():
     """
     health check

@@ -78,6 +78,30 @@ class System(ConfigBase):
         self.SERVER_HOST = ("SERVER_HOST", str)
         self.SERVER_PORT = ("SERVER_PORT", int)
 
+class Postgres(ConfigBase):
+    def __init__(self):
+        super().__init__()
+        self.POSTGRES_USER = ("POSTGRES_USER", str)
+        self.POSTGRES_PASSWORD = ("POSTGRES_PASSWORD", str)
+        self.POSTGRES_DB = ("POSTGRES_DB", str)
+        self.POSTGRES_HOST = ("POSTGRES_HOST", str)
+        self.POSTGRES_PORT = ("POSTGRES_PORT", int)
+
+
+class Security(ConfigBase):
+    """
+    An object to hold the configuration for security-related settings.
+    """
+    def __init__(self):
+        super().__init__()
+        self.ACCESS_TOKEN_EXPIRE_MINUTES = ("ACCESS_TOKEN_EXPIRE_MINUTES", int)
+        self.REFRESH_TOKEN_EXPIRE_MINUTES = ("REFRESH_TOKEN_EXPIRE_MINUTES", int)
+        self.ALGORITHM = ("ALGORITHM", str)
+        self.SECRET_KEY = ("SECRET_KEY", str)
+        self.JWT_TOKEN_PREFIX = ("JWT_TOKEN_PREFIX", str)
+        self.JWT_TOKEN_EXPIRE_MINUTES = ("JWT_TOKEN_EXPIRE_MINUTES", int)
+        self.JWT_TOKEN_REFRESH_EXPIRE_MINUTES = ("JWT_TOKEN_REFRESH_EXPIRE_MINUTES", int)
+        self.JWT_TOKEN_REFRESH_SECRET_KEY = ("JWT_TOKEN_REFRESH_SECRET_KEY", str)
 
 class LoadEnv:
     """
@@ -92,6 +116,7 @@ class LoadEnv:
         Args: None
         """
         self.system = System()
-
+        self.security = Security()
+        self.postgres = Postgres()
 
 env = LoadEnv()

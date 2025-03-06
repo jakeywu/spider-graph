@@ -1,6 +1,6 @@
 import os
 from loguru import logger
-from app.src.settings.base import PROJECT_DIR
+from src.settings.base import PROJECT_DIR
 
 
 server_log_path = os.path.join(os.path.join(PROJECT_DIR, "logs"), "server.log")
