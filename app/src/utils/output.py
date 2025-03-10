@@ -1,30 +1,26 @@
-import pydantic
 from typing import Any
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from fastapi import HTTPException
+from typing import Optional
 
 
-class BaseResponse(BaseModel):
-    """
-    base result
-    """
-    code: int = pydantic.Field(200, description="API status code")
-    message: str = pydantic.Field("success", description="API status message")
-    data: Any = pydantic.Field(None, description="API data")
+# --- 通用响应模型 ---
+class OutputResponse(BaseModel):
+    code: int = Field(200, description="API 状态码")
+    message: str = Field("success", description="API 状态信息")
+    data: Optional[Any] = Field(None, description="响应数据")
 
 
-def api_output(data: Any = None, message: str = "success", code: int = 200):
-    """
-    api output
-    :param data:
-    :param message:
-    :param code:
-    :return:
-    """
-    return BaseResponse(
-        data=data,
-        message=message.lower(),
+def api_output(
+    data: Optional[Any] = None,
+    message: str = "success",
+    code: int = 200
+) -> OutputResponse:
+    """统一 API 响应格式"""
+    return OutputResponse(
         code=code,
+        message=message.lower(),
+        data=data
     )
 
 
