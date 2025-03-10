@@ -77,7 +77,9 @@ NODE_MANAGER = APIRouter()
 
 @NODE_MANAGER.post(
     "/api/v1/node/create",
+    tags=["节点管理"],
     response_model=OutputResponse,
+    summary="当前用户登录之后生成默认节点",
     responses={
         200: {"description": "节点创建成功", "example": OutputResponse.example()},
         400: {"description": "请求参数错误", "example": {"code": 400, "message": "Invalid request parameters"}},

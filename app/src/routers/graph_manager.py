@@ -70,7 +70,9 @@ GRAPH_MANAGER = APIRouter()
 # --- 图谱查询接口 ---
 @GRAPH_MANAGER.get(
     "/api/v1/{node_id}/graph",
+    tags=["团管理"],
     response_model=OutputResponse,
+    summary="查询当前节点所在完整团",
     responses={
         200: {"description": "成功返回图谱数据", "example": OutputResponse.example()},
         400: {"description": "请求参数错误", "example": {"code": 400, "message": "Invalid request parameters"}},
