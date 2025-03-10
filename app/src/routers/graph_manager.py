@@ -1,6 +1,6 @@
-from fastapi import APIRouter, HTTPException, Path
+from fastapi import APIRouter, Path
 from pydantic import BaseModel, Field
-from typing import Dict, Any, List
+from typing import Dict, Any, List, Optional
 from src.utils.output import OutputResponse, api_output
 
 
@@ -19,47 +19,65 @@ class GraphData(BaseModel):
     nodes: List[NodeModel] = Field(..., description="节点列表")
     links: List[LinkModel] = Field(..., description="关系列表")
 
+# --- 模拟数据库数据 ---
+MOCK_DATA = GraphData(
+    nodes=[
+        NodeModel(
+            id="NODE_003",
+            label="Person",
+            properties={
+                "name": "朱棣",
+                "birth_year": 1360,
+                "birth_place": "应天府",
+                "title": "明成祖"
+            }
+        ),
+        # 其他关联节点...
+    ],
+    links=[
+        LinkModel(
+            source="NODE_003",
+            target="NODE_001",
+            type="Father"
+        ),
+        # 其他关系...
+    ]
+)
+
+
+class OutputResponse(BaseModel):
+    code: int = Field(200, description="API状态码")
+    message: str = Field("success", description="API响应消息")
+    data: Optional[GraphData] = Field(
+        None,
+        description="查看某个节点的图",
+        example=None
+    )
+
+    @classmethod
+    def example(cls):
+        return cls(
+            code=200,
+            message="success",
+            data=MOCK_DATA
+        )
+    
 # --- API 路由 ---
 GRAPH_MANAGER = APIRouter()
 
 
-# --- 模拟数据库数据 ---
-MOCK_DATA = {
-    "NODE_003": GraphData(
-        nodes=[
-            NodeModel(
-                id="NODE_003",
-                label="Person",
-                properties={
-                    "name": "朱棣",
-                    "birth_year": 1360,
-                    "birth_place": "应天府",
-                    "title": "明成祖"
-                }
-            ),
-            # 其他关联节点...
-        ],
-        links=[
-            LinkModel(
-                source="NODE_003",
-                target="NODE_001",
-                type="Father"
-            ),
-            # 其他关系...
-        ]
-    )
-}
 
 # --- 图谱查询接口 ---
 @GRAPH_MANAGER.get(
     "/api/v1/{node_id}/graph",
     response_model=OutputResponse,
     responses={
-        200: {"model": OutputResponse, "description": "成功返回图谱数据"},
-        404: {"description": "节点不存在"}
+        200: {"description": "成功返回图谱数据", "example": OutputResponse.example()},
+        400: {"description": "请求参数错误", "example": {"code": 400, "message": "Invalid request parameters"}},
+        422: {"description": "数据格式错误", "example": {"code": 422, "message": "Validation error"}},
     }
 )
-async def get_graph(
+async def get_graph_by_node_id(
     node_id: str = Path(..., min_length=3, example="NODE_003", description="节点唯一标识符")
 ) -> OutputResponse:
     """
@@ -67,5 +85,4 @@ async def get_graph(
     
     - **node_id**: 节点唯一标识符（示例：NODE_003）
     """
-    graph = MOCK_DATA.get(node_id)
-    return api_output(data=graph.model_dump())
+    return OutputResponse(code=200, message="success", data=MOCK_DATA).model_dump()
