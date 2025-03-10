@@ -1,23 +1,23 @@
 import uvicorn
-from src.settings.c_logger import LOG_CONFIGURE
+from fastapi import FastAPI
 from src.routers.health import HEALTH_ROUTER
 from src.routers.auth import AUTH_ROUTER
 from src.routers.user import USER_ROUTER
 from src.settings.load_env import env
-from fastapi import FastAPI
 
-
+# 创建 FastAPI 实例
 APP = FastAPI()
 
+# 注册路由
+APP.include_router(HEALTH_ROUTER)
+APP.include_router(AUTH_ROUTER)
+APP.include_router(USER_ROUTER)
 
+# 仅在直接运行 main.py 时使用 uvicorn 启动
 if __name__ == "__main__":
-    APP.include_router(HEALTH_ROUTER)
-    APP.include_router(AUTH_ROUTER)
-    APP.include_router(USER_ROUTER)
     uvicorn.run(
-        app=APP,
+        "main:APP",  # 这里使用 "main:APP" 以兼容 `fastapi run main.py` 和 `fastapi dev main.py`
         host=env.system.SERVER_HOST,
         port=env.system.SERVER_PORT,
-        log_config=LOG_CONFIGURE
+        reload=True  # 便于开发时热重载
     )
-

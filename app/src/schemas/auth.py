@@ -13,8 +13,8 @@ class UserBase(BaseModel):
     nickname: str
 
 class UserCreateMobile(BaseModel):
-    mobile: str
-    verification_code: str
+    mobile: int
+    verification_code: int
 
 class UserCreateEmail(BaseModel):
     email: EmailStr
