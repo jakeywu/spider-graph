@@ -23,7 +23,7 @@ class CreateNodeRequest(BaseModel):
     )
 
 
-class CreateNodeResponse(BaseModel):
+class NodeResponse(BaseModel):
     """
     创建默认节点响应
     """
@@ -93,7 +93,21 @@ class CreateRelationAndNodeResponse(BaseModel):
     """
     关联图数据返回
     """
-    nodes: List[CreateNodeResponse] = Field(
+    nodes: List[NodeResponse] = Field(
+        ...,
+        description="创建的节点列表",
+    )
+    links: List[RelationResponse] = Field(
+        ...,
+        description="创建的关系列表",
+    )
+
+
+class ViewGraphResponse(BaseModel):
+    """
+    查看图响应
+    """
+    nodes: List[NodeResponse] = Field(
         ...,
         description="创建的节点列表",
     )

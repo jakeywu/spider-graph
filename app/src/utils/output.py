@@ -2,25 +2,16 @@ from typing import Any
 from pydantic import BaseModel, Field
 from fastapi import HTTPException
 from typing import Optional
+from typing import Generic, TypeVar, Optional
 
+# 定义泛型类型变量
+T = TypeVar('T')
 
-# --- 通用响应模型 ---
-class OutputResponse(BaseModel):
-    code: int = Field(200, description="API 状态码")
-    message: str = Field("success", description="API 状态信息")
-    data: Optional[Any] = Field(None, description="响应数据")
-
-
-def api_output(
-    data: Optional[Any] = None,
-    message: str = "success",
-    code: int = 200
-) -> OutputResponse:
-    """统一 API 响应格式"""
-    return OutputResponse(
-        code=code,
-        message=message.lower(),
-        data=data
+class APIOutputResponse(BaseModel, Generic[T]):
+    code: int = Field(200, description="API状态码")
+    message: str = Field("success", description="API响应消息")
+    data: Optional[T] = Field(
+        description="响应数据内容"
     )
 
 

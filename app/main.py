@@ -1,10 +1,7 @@
 import uvicorn
 from fastapi import FastAPI
-from src.routers.health import HEALTH_ROUTER
-from src.routers.auth import AUTH_ROUTER
-from src.routers.user import USER_ROUTER
-from src.routers.graph.create_node import NODE_MANAGER
-from src.routers.graph.view_graph import GRAPH_MANAGER
+from src.routers.node import NODE_MANAGER
+from src.routers.graph import GRAPH_MANAGER
 from src.settings.load_env import env
 
 # 创建 FastAPI 实例
@@ -14,9 +11,6 @@ APP = FastAPI(
     [原型说明文档](https://v0.dev/chat/family-tree-55Jlpju3SKn?b=b_UbNoCuL2O0X)""",
 )
 
-# 注册路由
-# APP.include_router(HEALTH_ROUTER)
-# APP.include_router(AUTH_ROUTER)
 APP.include_router(NODE_MANAGER)
 APP.include_router(GRAPH_MANAGER)
 
