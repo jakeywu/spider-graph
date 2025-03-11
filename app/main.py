@@ -3,8 +3,8 @@ from fastapi import FastAPI
 from src.routers.health import HEALTH_ROUTER
 from src.routers.auth import AUTH_ROUTER
 from src.routers.user import USER_ROUTER
-from src.routers.node_manager import NODE_MANAGER
-from src.routers.graph_manager import GRAPH_MANAGER
+from src.routers.graph.create_node import NODE_MANAGER
+from src.routers.graph.view_graph import GRAPH_MANAGER
 from src.settings.load_env import env
 
 # 创建 FastAPI 实例

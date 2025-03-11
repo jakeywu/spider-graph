@@ -29,3 +29,6 @@ class LoginHistory(Base):
     status = Column(String(20))
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+
+
